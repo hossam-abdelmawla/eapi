@@ -18,7 +18,7 @@ class ReviewFactory extends Factory
             'customer'   => $this->faker->name,
             'review'     => $this->faker->paragraph,
             'star'       => $this->faker->numberBetween(0, 5),
-            'product_id' => Product::factoy()
+            'product_id' => Product::factory()
         ];
     }
 }
