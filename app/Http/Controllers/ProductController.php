@@ -42,7 +42,7 @@ class ProductController extends Controller
     {
         $product->update($request->all());
         $product->save();
-        return response(ProductResource::make($product));
+        return response(ProductResource::make($product), Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -53,6 +53,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
