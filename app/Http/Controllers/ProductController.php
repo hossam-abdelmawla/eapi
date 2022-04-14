@@ -7,9 +7,14 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('index', 'show');
+    }
 
     public function index()
     {
@@ -20,7 +25,9 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        //
+        $product = Product::create($request->all());
+        $product->save();
+        return response([ProductResource::make($product)], Response::HTTP_CREATED);
     }
 
 
@@ -30,27 +37,12 @@ class ProductController extends Controller
         return ProductResource::make($product);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->all());
+        $product->save();
+        return response(ProductResource::make($product));
     }
 
     /**
